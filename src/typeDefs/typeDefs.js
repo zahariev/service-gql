@@ -1,6 +1,6 @@
 const { gql } = require("apollo-server-express");
-const user = require("./user");
-const post = require("./post");
+// const user = require("./user");
+// const post = require("./post");
 const geolocation = require("./geolocation");
 
 const base = gql`
@@ -14,4 +14,4 @@ const base = gql`
   }
 `;
 
-module.exports = [base, user, post, geolocation];
+module.exports = [base, geolocation]; // user, post,

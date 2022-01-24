@@ -1,5 +1,5 @@
 const thrift = require("thrift");
-const GeoLocationService = require("../thrift/geolocation/TGeoLocationService");
+const TGeoLocationService = require("../thrift/geolocation/TGeoLocationService");
 const logger = require("../utils/logger");
 
 const SERVER_HOST =
@@ -26,7 +26,7 @@ connection.on("error", (err) => {
 });
 
 connection.on("connect", () => {
-  client = thrift.createClient(GeoLocationService, connection);
+  client = thrift.createClient(TGeoLocationService, connection);
   logger.info("geolocationClient: Connected to thrift server!");
 });
 
