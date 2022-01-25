@@ -1,7 +1,7 @@
-const geolocationPing = require("./geolocationPing");
+const getLastGeoLocation = require("./getLastGeoLocation");
 
 module.exports = {
   Query: {
-    geolocationPing,
+    getLastGeoLocation,
   },
 };
