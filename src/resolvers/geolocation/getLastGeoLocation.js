@@ -2,11 +2,8 @@ const geolocationClient = require("../../thriftClients/geolocation");
 
 module.exports = async () => {
   try {
-    const { vin, dongle_id } = await geolocationClient(
-      "getLastGeoLocation",
-      []
-    );
-    return { vin, dongle_id };
+    const { vin, dongleId } = await geolocationClient("getLastGeoLocation", []);
+    return { vin, dongleId };
   } catch (e) {
     throw e;
   }

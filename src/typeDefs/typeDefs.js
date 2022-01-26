@@ -11,8 +11,8 @@ const base = gql`
   }
 
   type GeoResponse {
-    message: String
-    _version: Int
+    vin: String
+    dongleId: Int
   }
 
   type Query {
