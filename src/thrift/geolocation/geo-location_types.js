@@ -11,7 +11,7 @@ if (typeof Int64 === "undefined" && typeof require === "function") {
   var Int64 = require("node-int64");
 }
 
-TGeoLocationException = function (args) {
+var TGeoLocationException = function (args) {
   this.id = null;
   this.message = null;
   if (args) {
@@ -75,7 +75,7 @@ TGeoLocationException.prototype.write = function (output) {
   return;
 };
 
-TGeoCoordinate = function (args) {
+var TGeoCoordinate = function (args) {
   this.vin = null;
   this.dongleId = null;
   this.lat = null;
@@ -291,6 +291,770 @@ TGeoCoordinate.prototype.write = function (output) {
   if (this.time !== null && this.time !== undefined) {
     output.writeFieldBegin("time", Thrift.Type.I64, 12);
     output.writeI64(this.time);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+TGeofenceRq = function (args) {
+  this.label = null;
+  this.description = null;
+  this.circle = null;
+  this.polygon = null;
+  if (args) {
+    if (args.label !== undefined && args.label !== null) {
+      this.label = args.label;
+    }
+    if (args.description !== undefined && args.description !== null) {
+      this.description = args.description;
+    }
+    if (args.circle !== undefined && args.circle !== null) {
+      this.circle = new TCircleRq(args.circle);
+    }
+    if (args.polygon !== undefined && args.polygon !== null) {
+      this.polygon = new TPolygonRq(args.polygon);
+    }
+  }
+};
+TGeofenceRq.prototype = {};
+TGeofenceRq.prototype.read = function (input) {
+  input.readStructBegin();
+  while (true) {
+    var ret = input.readFieldBegin();
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid) {
+      case 1:
+        if (ftype == Thrift.Type.STRING) {
+          this.label = input.readString().value;
+        } else {
+          input.skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == Thrift.Type.STRING) {
+          this.description = input.readString().value;
+        } else {
+          input.skip(ftype);
+        }
+        break;
+      case 3:
+        if (ftype == Thrift.Type.STRUCT) {
+          this.circle = new TCircleRq();
+          this.circle.read(input);
+        } else {
+          input.skip(ftype);
+        }
+        break;
+      case 4:
+        if (ftype == Thrift.Type.STRUCT) {
+          this.polygon = new TPolygonRq();
+          this.polygon.read(input);
+        } else {
+          input.skip(ftype);
+        }
+        break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+TGeofenceRq.prototype.write = function (output) {
+  output.writeStructBegin("TGeofenceRq");
+  if (this.label !== null && this.label !== undefined) {
+    output.writeFieldBegin("label", Thrift.Type.STRING, 1);
+    output.writeString(this.label);
+    output.writeFieldEnd();
+  }
+  if (this.description !== null && this.description !== undefined) {
+    output.writeFieldBegin("description", Thrift.Type.STRING, 2);
+    output.writeString(this.description);
+    output.writeFieldEnd();
+  }
+  if (this.circle !== null && this.circle !== undefined) {
+    output.writeFieldBegin("circle", Thrift.Type.STRUCT, 3);
+    this.circle.write(output);
+    output.writeFieldEnd();
+  }
+  if (this.polygon !== null && this.polygon !== undefined) {
+    output.writeFieldBegin("polygon", Thrift.Type.STRUCT, 4);
+    this.polygon.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+var TCircleRq = function (args) {
+  this.radius = null;
+  this.lat = null;
+  this.lng = null;
+  this.address = null;
+  this.color = null;
+  if (args) {
+    if (args.radius !== undefined && args.radius !== null) {
+      this.radius = args.radius;
+    }
+    if (args.lat !== undefined && args.lat !== null) {
+      this.lat = args.lat;
+    }
+    if (args.lng !== undefined && args.lng !== null) {
+      this.lng = args.lng;
+    }
+    if (args.address !== undefined && args.address !== null) {
+      this.address = args.address;
+    }
+    if (args.color !== undefined && args.color !== null) {
+      this.color = args.color;
+    }
+  }
+};
+TCircleRq.prototype = {};
+TCircleRq.prototype.read = function (input) {
+  input.readStructBegin();
+  while (true) {
+    var ret = input.readFieldBegin();
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid) {
+      case 1:
+        if (ftype == Thrift.Type.DOUBLE) {
+          this.radius = input.readDouble().value;
+        } else {
+          input.skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == Thrift.Type.DOUBLE) {
+          this.lat = input.readDouble().value;
+        } else {
+          input.skip(ftype);
+        }
+        break;
+      case 3:
+        if (ftype == Thrift.Type.DOUBLE) {
+          this.lng = input.readDouble().value;
+        } else {
+          input.skip(ftype);
+        }
+        break;
+      case 4:
+        if (ftype == Thrift.Type.STRING) {
+          this.address = input.readString().value;
+        } else {
+          input.skip(ftype);
+        }
+        break;
+      case 5:
+        if (ftype == Thrift.Type.STRING) {
+          this.color = input.readString().value;
+        } else {
+          input.skip(ftype);
+        }
+        break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+TCircleRq.prototype.write = function (output) {
+  output.writeStructBegin("TCircleRq");
+  if (this.radius !== null && this.radius !== undefined) {
+    output.writeFieldBegin("radius", Thrift.Type.DOUBLE, 1);
+    output.writeDouble(this.radius);
+    output.writeFieldEnd();
+  }
+  if (this.lat !== null && this.lat !== undefined) {
+    output.writeFieldBegin("lat", Thrift.Type.DOUBLE, 2);
+    output.writeDouble(this.lat);
+    output.writeFieldEnd();
+  }
+  if (this.lng !== null && this.lng !== undefined) {
+    output.writeFieldBegin("lng", Thrift.Type.DOUBLE, 3);
+    output.writeDouble(this.lng);
+    output.writeFieldEnd();
+  }
+  if (this.address !== null && this.address !== undefined) {
+    output.writeFieldBegin("address", Thrift.Type.STRING, 4);
+    output.writeString(this.address);
+    output.writeFieldEnd();
+  }
+  if (this.color !== null && this.color !== undefined) {
+    output.writeFieldBegin("color", Thrift.Type.STRING, 5);
+    output.writeString(this.color);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+var TPolygonRq = function (args) {
+  this.color = null;
+  this.point = null;
+  if (args) {
+    if (args.color !== undefined && args.color !== null) {
+      this.color = args.color;
+    }
+    if (args.point !== undefined && args.point !== null) {
+      this.point = Thrift.copyList(args.point, [null]);
+    }
+  }
+};
+TPolygonRq.prototype = {};
+TPolygonRq.prototype.read = function (input) {
+  input.readStructBegin();
+  while (true) {
+    var ret = input.readFieldBegin();
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid) {
+      case 1:
+        if (ftype == Thrift.Type.STRING) {
+          this.color = input.readString().value;
+        } else {
+          input.skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == Thrift.Type.LIST) {
+          this.point = [];
+          var _rtmp31 = input.readListBegin();
+          var _size0 = _rtmp31.size || 0;
+          for (var _i2 = 0; _i2 < _size0; ++_i2) {
+            var elem3 = null;
+            elem3 = new TPointRq();
+            elem3.read(input);
+            this.point.push(elem3);
+          }
+          input.readListEnd();
+        } else {
+          input.skip(ftype);
+        }
+        break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+TPolygonRq.prototype.write = function (output) {
+  output.writeStructBegin("TPolygonRq");
+  if (this.color !== null && this.color !== undefined) {
+    output.writeFieldBegin("color", Thrift.Type.STRING, 1);
+    output.writeString(this.color);
+    output.writeFieldEnd();
+  }
+  if (this.point !== null && this.point !== undefined) {
+    output.writeFieldBegin("point", Thrift.Type.LIST, 2);
+    output.writeListBegin(Thrift.Type.STRUCT, this.point.length);
+    for (var iter4 in this.point) {
+      if (this.point.hasOwnProperty(iter4)) {
+        iter4 = this.point[iter4];
+        iter4.write(output);
+      }
+    }
+    output.writeListEnd();
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+var TPointRq = function (args) {
+  this.lat = null;
+  this.lng = null;
+  if (args) {
+    if (args.lat !== undefined && args.lat !== null) {
+      this.lat = args.lat;
+    }
+    if (args.lng !== undefined && args.lng !== null) {
+      this.lng = args.lng;
+    }
+  }
+};
+TPointRq.prototype = {};
+TPointRq.prototype.read = function (input) {
+  input.readStructBegin();
+  while (true) {
+    var ret = input.readFieldBegin();
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid) {
+      case 1:
+        if (ftype == Thrift.Type.DOUBLE) {
+          this.lat = input.readDouble().value;
+        } else {
+          input.skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == Thrift.Type.DOUBLE) {
+          this.lng = input.readDouble().value;
+        } else {
+          input.skip(ftype);
+        }
+        break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+TPointRq.prototype.write = function (output) {
+  output.writeStructBegin("TPointRq");
+  if (this.lat !== null && this.lat !== undefined) {
+    output.writeFieldBegin("lat", Thrift.Type.DOUBLE, 1);
+    output.writeDouble(this.lat);
+    output.writeFieldEnd();
+  }
+  if (this.lng !== null && this.lng !== undefined) {
+    output.writeFieldBegin("lng", Thrift.Type.DOUBLE, 2);
+    output.writeDouble(this.lng);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+var TGeofence = function (args) {
+  this.id = null;
+  this.label = null;
+  this.description = null;
+  this.circle = null;
+  this.polygon = null;
+  if (args) {
+    if (args.id !== undefined && args.id !== null) {
+      this.id = args.id;
+    }
+    if (args.label !== undefined && args.label !== null) {
+      this.label = args.label;
+    }
+    if (args.description !== undefined && args.description !== null) {
+      this.description = args.description;
+    }
+    if (args.circle !== undefined && args.circle !== null) {
+      this.circle = new TCircle(args.circle);
+    }
+    if (args.polygon !== undefined && args.polygon !== null) {
+      this.polygon = new TPolygon(args.polygon);
+    }
+  }
+};
+TGeofence.prototype = {};
+TGeofence.prototype.read = function (input) {
+  input.readStructBegin();
+  while (true) {
+    var ret = input.readFieldBegin();
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid) {
+      case 1:
+        if (ftype == Thrift.Type.I64) {
+          this.id = input.readI64().value;
+        } else {
+          input.skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == Thrift.Type.STRING) {
+          this.label = input.readString().value;
+        } else {
+          input.skip(ftype);
+        }
+        break;
+      case 3:
+        if (ftype == Thrift.Type.STRING) {
+          this.description = input.readString().value;
+        } else {
+          input.skip(ftype);
+        }
+        break;
+      case 4:
+        if (ftype == Thrift.Type.STRUCT) {
+          this.circle = new TCircle();
+          this.circle.read(input);
+        } else {
+          input.skip(ftype);
+        }
+        break;
+      case 5:
+        if (ftype == Thrift.Type.STRUCT) {
+          this.polygon = new TPolygon();
+          this.polygon.read(input);
+        } else {
+          input.skip(ftype);
+        }
+        break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+TGeofence.prototype.write = function (output) {
+  output.writeStructBegin("TGeofence");
+  if (this.id !== null && this.id !== undefined) {
+    output.writeFieldBegin("id", Thrift.Type.I64, 1);
+    output.writeI64(this.id);
+    output.writeFieldEnd();
+  }
+  if (this.label !== null && this.label !== undefined) {
+    output.writeFieldBegin("label", Thrift.Type.STRING, 2);
+    output.writeString(this.label);
+    output.writeFieldEnd();
+  }
+  if (this.description !== null && this.description !== undefined) {
+    output.writeFieldBegin("description", Thrift.Type.STRING, 3);
+    output.writeString(this.description);
+    output.writeFieldEnd();
+  }
+  if (this.circle !== null && this.circle !== undefined) {
+    output.writeFieldBegin("circle", Thrift.Type.STRUCT, 4);
+    this.circle.write(output);
+    output.writeFieldEnd();
+  }
+  if (this.polygon !== null && this.polygon !== undefined) {
+    output.writeFieldBegin("polygon", Thrift.Type.STRUCT, 5);
+    this.polygon.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+var TCircle = function (args) {
+  this.id = null;
+  this.radius = null;
+  this.lat = null;
+  this.lng = null;
+  this.address = null;
+  this.color = null;
+  if (args) {
+    if (args.id !== undefined && args.id !== null) {
+      this.id = args.id;
+    }
+    if (args.radius !== undefined && args.radius !== null) {
+      this.radius = args.radius;
+    }
+    if (args.lat !== undefined && args.lat !== null) {
+      this.lat = args.lat;
+    }
+    if (args.lng !== undefined && args.lng !== null) {
+      this.lng = args.lng;
+    }
+    if (args.address !== undefined && args.address !== null) {
+      this.address = args.address;
+    }
+    if (args.color !== undefined && args.color !== null) {
+      this.color = args.color;
+    }
+  }
+};
+TCircle.prototype = {};
+TCircle.prototype.read = function (input) {
+  input.readStructBegin();
+  while (true) {
+    var ret = input.readFieldBegin();
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid) {
+      case 1:
+        if (ftype == Thrift.Type.I64) {
+          this.id = input.readI64().value;
+        } else {
+          input.skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == Thrift.Type.DOUBLE) {
+          this.radius = input.readDouble().value;
+        } else {
+          input.skip(ftype);
+        }
+        break;
+      case 3:
+        if (ftype == Thrift.Type.DOUBLE) {
+          this.lat = input.readDouble().value;
+        } else {
+          input.skip(ftype);
+        }
+        break;
+      case 4:
+        if (ftype == Thrift.Type.DOUBLE) {
+          this.lng = input.readDouble().value;
+        } else {
+          input.skip(ftype);
+        }
+        break;
+      case 5:
+        if (ftype == Thrift.Type.STRING) {
+          this.address = input.readString().value;
+        } else {
+          input.skip(ftype);
+        }
+        break;
+      case 6:
+        if (ftype == Thrift.Type.STRING) {
+          this.color = input.readString().value;
+        } else {
+          input.skip(ftype);
+        }
+        break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+TCircle.prototype.write = function (output) {
+  output.writeStructBegin("TCircle");
+  if (this.id !== null && this.id !== undefined) {
+    output.writeFieldBegin("id", Thrift.Type.I64, 1);
+    output.writeI64(this.id);
+    output.writeFieldEnd();
+  }
+  if (this.radius !== null && this.radius !== undefined) {
+    output.writeFieldBegin("radius", Thrift.Type.DOUBLE, 2);
+    output.writeDouble(this.radius);
+    output.writeFieldEnd();
+  }
+  if (this.lat !== null && this.lat !== undefined) {
+    output.writeFieldBegin("lat", Thrift.Type.DOUBLE, 3);
+    output.writeDouble(this.lat);
+    output.writeFieldEnd();
+  }
+  if (this.lng !== null && this.lng !== undefined) {
+    output.writeFieldBegin("lng", Thrift.Type.DOUBLE, 4);
+    output.writeDouble(this.lng);
+    output.writeFieldEnd();
+  }
+  if (this.address !== null && this.address !== undefined) {
+    output.writeFieldBegin("address", Thrift.Type.STRING, 5);
+    output.writeString(this.address);
+    output.writeFieldEnd();
+  }
+  if (this.color !== null && this.color !== undefined) {
+    output.writeFieldBegin("color", Thrift.Type.STRING, 6);
+    output.writeString(this.color);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+var TPolygon = function (args) {
+  this.id = null;
+  this.color = null;
+  this.point = null;
+  if (args) {
+    if (args.id !== undefined && args.id !== null) {
+      this.id = args.id;
+    }
+    if (args.color !== undefined && args.color !== null) {
+      this.color = args.color;
+    }
+    if (args.point !== undefined && args.point !== null) {
+      this.point = Thrift.copyList(args.point, [null]);
+    }
+  }
+};
+TPolygon.prototype = {};
+TPolygon.prototype.read = function (input) {
+  input.readStructBegin();
+  while (true) {
+    var ret = input.readFieldBegin();
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid) {
+      case 1:
+        if (ftype == Thrift.Type.I64) {
+          this.id = input.readI64().value;
+        } else {
+          input.skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == Thrift.Type.STRING) {
+          this.color = input.readString().value;
+        } else {
+          input.skip(ftype);
+        }
+        break;
+      case 3:
+        if (ftype == Thrift.Type.LIST) {
+          this.point = [];
+          var _rtmp36 = input.readListBegin();
+          var _size5 = _rtmp36.size || 0;
+          for (var _i7 = 0; _i7 < _size5; ++_i7) {
+            var elem8 = null;
+            elem8 = new TPoint();
+            elem8.read(input);
+            this.point.push(elem8);
+          }
+          input.readListEnd();
+        } else {
+          input.skip(ftype);
+        }
+        break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+TPolygon.prototype.write = function (output) {
+  output.writeStructBegin("TPolygon");
+  if (this.id !== null && this.id !== undefined) {
+    output.writeFieldBegin("id", Thrift.Type.I64, 1);
+    output.writeI64(this.id);
+    output.writeFieldEnd();
+  }
+  if (this.color !== null && this.color !== undefined) {
+    output.writeFieldBegin("color", Thrift.Type.STRING, 2);
+    output.writeString(this.color);
+    output.writeFieldEnd();
+  }
+  if (this.point !== null && this.point !== undefined) {
+    output.writeFieldBegin("point", Thrift.Type.LIST, 3);
+    output.writeListBegin(Thrift.Type.STRUCT, this.point.length);
+    for (var iter9 in this.point) {
+      if (this.point.hasOwnProperty(iter9)) {
+        iter9 = this.point[iter9];
+        iter9.write(output);
+      }
+    }
+    output.writeListEnd();
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+var TPoint = function (args) {
+  this.id = null;
+  this.lat = null;
+  this.lng = null;
+  if (args) {
+    if (args.id !== undefined && args.id !== null) {
+      this.id = args.id;
+    }
+    if (args.lat !== undefined && args.lat !== null) {
+      this.lat = args.lat;
+    }
+    if (args.lng !== undefined && args.lng !== null) {
+      this.lng = args.lng;
+    }
+  }
+};
+TPoint.prototype = {};
+TPoint.prototype.read = function (input) {
+  input.readStructBegin();
+  while (true) {
+    var ret = input.readFieldBegin();
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid) {
+      case 1:
+        if (ftype == Thrift.Type.I64) {
+          this.id = input.readI64().value;
+        } else {
+          input.skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == Thrift.Type.DOUBLE) {
+          this.lat = input.readDouble().value;
+        } else {
+          input.skip(ftype);
+        }
+        break;
+      case 3:
+        if (ftype == Thrift.Type.DOUBLE) {
+          this.lng = input.readDouble().value;
+        } else {
+          input.skip(ftype);
+        }
+        break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+TPoint.prototype.write = function (output) {
+  output.writeStructBegin("TPoint");
+  if (this.id !== null && this.id !== undefined) {
+    output.writeFieldBegin("id", Thrift.Type.I64, 1);
+    output.writeI64(this.id);
+    output.writeFieldEnd();
+  }
+  if (this.lat !== null && this.lat !== undefined) {
+    output.writeFieldBegin("lat", Thrift.Type.DOUBLE, 2);
+    output.writeDouble(this.lat);
+    output.writeFieldEnd();
+  }
+  if (this.lng !== null && this.lng !== undefined) {
+    output.writeFieldBegin("lng", Thrift.Type.DOUBLE, 3);
+    output.writeDouble(this.lng);
     output.writeFieldEnd();
   }
   output.writeFieldStop();

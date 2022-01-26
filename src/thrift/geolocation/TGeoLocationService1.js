@@ -10,11 +10,11 @@ var thrift = require("thrift");
 var Thrift = thrift.Thrift;
 var Q = thrift.Q;
 
+// var ttypes = require("./user_types");
+
 if (typeof Int64 === "undefined" && typeof require === "function") {
   var Int64 = require("node-int64");
 }
-
-//HELPER FUNCTIONS AND STRUCTURES
 
 var TGeoLocationService_getLastGeoLocation_args = function (args) {
   this.vin = null;
@@ -28,6 +28,7 @@ var TGeoLocationService_getLastGeoLocation_args = function (args) {
     }
   }
 };
+
 TGeoLocationService_getLastGeoLocation_args.prototype = {};
 TGeoLocationService_getLastGeoLocation_args.prototype.read = function (input) {
   input.readStructBegin();
@@ -136,126 +137,6 @@ TGeoLocationService_getLastGeoLocation_result.prototype.write = function (
   return;
 };
 
-var TGeoLocationService_createGeofence_args = function (args) {
-  this.geofence = null;
-  if (args) {
-    if (args.geofence !== undefined && args.geofence !== null) {
-      this.geofence = new TGeofenceRq(args.geofence);
-    }
-  }
-};
-TGeoLocationService_createGeofence_args.prototype = {};
-TGeoLocationService_createGeofence_args.prototype.read = function (input) {
-  input.readStructBegin();
-  while (true) {
-    var ret = input.readFieldBegin();
-    var ftype = ret.ftype;
-    var fid = ret.fid;
-    if (ftype == Thrift.Type.STOP) {
-      break;
-    }
-    switch (fid) {
-      case 1:
-        if (ftype == Thrift.Type.STRUCT) {
-          this.geofence = new TGeofenceRq();
-          this.geofence.read(input);
-        } else {
-          input.skip(ftype);
-        }
-        break;
-      case 0:
-        input.skip(ftype);
-        break;
-      default:
-        input.skip(ftype);
-    }
-    input.readFieldEnd();
-  }
-  input.readStructEnd();
-  return;
-};
-
-TGeoLocationService_createGeofence_args.prototype.write = function (output) {
-  output.writeStructBegin("TGeoLocationService_createGeofence_args");
-  if (this.geofence !== null && this.geofence !== undefined) {
-    output.writeFieldBegin("geofence", Thrift.Type.STRUCT, 1);
-    this.geofence.write(output);
-    output.writeFieldEnd();
-  }
-  output.writeFieldStop();
-  output.writeStructEnd();
-  return;
-};
-
-var TGeoLocationService_createGeofence_result = function (args) {
-  this.success = null;
-  this.e = null;
-  if (args instanceof TGeoLocationException) {
-    this.e = args;
-    return;
-  }
-  if (args) {
-    if (args.success !== undefined && args.success !== null) {
-      this.success = new TGeofence(args.success);
-    }
-    if (args.e !== undefined && args.e !== null) {
-      this.e = args.e;
-    }
-  }
-};
-TGeoLocationService_createGeofence_result.prototype = {};
-TGeoLocationService_createGeofence_result.prototype.read = function (input) {
-  input.readStructBegin();
-  while (true) {
-    var ret = input.readFieldBegin();
-    var ftype = ret.ftype;
-    var fid = ret.fid;
-    if (ftype == Thrift.Type.STOP) {
-      break;
-    }
-    switch (fid) {
-      case 0:
-        if (ftype == Thrift.Type.STRUCT) {
-          this.success = new TGeofence();
-          this.success.read(input);
-        } else {
-          input.skip(ftype);
-        }
-        break;
-      case 1:
-        if (ftype == Thrift.Type.STRUCT) {
-          this.e = new TGeoLocationException();
-          this.e.read(input);
-        } else {
-          input.skip(ftype);
-        }
-        break;
-      default:
-        input.skip(ftype);
-    }
-    input.readFieldEnd();
-  }
-  input.readStructEnd();
-  return;
-};
-
-TGeoLocationService_createGeofence_result.prototype.write = function (output) {
-  output.writeStructBegin("TGeoLocationService_createGeofence_result");
-  if (this.success !== null && this.success !== undefined) {
-    output.writeFieldBegin("success", Thrift.Type.STRUCT, 0);
-    this.success.write(output);
-    output.writeFieldEnd();
-  }
-  if (this.e !== null && this.e !== undefined) {
-    output.writeFieldBegin("e", Thrift.Type.STRUCT, 1);
-    this.e.write(output);
-    output.writeFieldEnd();
-  }
-  output.writeFieldStop();
-  output.writeStructEnd();
-  return;
-};
-
 var TGeoLocationServiceClient = function (input, output) {
   this.input = input;
   this.output = !output ? input : output;
@@ -331,74 +212,4 @@ TGeoLocationServiceClient.prototype.recv_getLastGeoLocation = function () {
     return result.success;
   }
   throw "getLastGeoLocation failed: unknown result";
-};
-
-TGeoLocationServiceClient.prototype.createGeofence = function (
-  geofence,
-  callback
-) {
-  this.send_createGeofence(geofence, callback);
-  if (!callback) {
-    return this.recv_createGeofence();
-  }
-};
-
-TGeoLocationServiceClient.prototype.send_createGeofence = function (
-  geofence,
-  callback
-) {
-  var params = {
-    geofence: geofence,
-  };
-  var args = new TGeoLocationService_createGeofence_args(params);
-  try {
-    this.output.writeMessageBegin(
-      "createGeofence",
-      Thrift.MessageType.CALL,
-      this.seqid
-    );
-    args.write(this.output);
-    this.output.writeMessageEnd();
-    if (callback) {
-      var self = this;
-      this.output.getTransport().flush(true, function () {
-        var result = null;
-        try {
-          result = self.recv_createGeofence();
-        } catch (e) {
-          result = e;
-        }
-        callback(result);
-      });
-    } else {
-      return this.output.getTransport().flush();
-    }
-  } catch (e) {
-    if (typeof this.output.getTransport().reset === "function") {
-      this.output.getTransport().reset();
-    }
-    throw e;
-  }
-};
-
-TGeoLocationServiceClient.prototype.recv_createGeofence = function () {
-  var ret = this.input.readMessageBegin();
-  var mtype = ret.mtype;
-  if (mtype == Thrift.MessageType.EXCEPTION) {
-    var x = new Thrift.TApplicationException();
-    x.read(this.input);
-    this.input.readMessageEnd();
-    throw x;
-  }
-  var result = new TGeoLocationService_createGeofence_result();
-  result.read(this.input);
-  this.input.readMessageEnd();
-
-  if (null !== result.e) {
-    throw result.e;
-  }
-  if (null !== result.success) {
-    return result.success;
-  }
-  throw "createGeofence failed: unknown result";
 };
