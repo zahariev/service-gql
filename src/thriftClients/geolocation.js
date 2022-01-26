@@ -26,6 +26,9 @@ connection.on("error", (err) => {
 });
 
 connection.on("connect", () => {
+  console.log("TGService", TGeoLocationService);
+  console.log("============================");
+  console.log("conn", connection);
   client = thrift.createClient(TGeoLocationService, connection);
   logger.info("geolocationClient: Connected to thrift server!");
 });

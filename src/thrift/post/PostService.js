@@ -5,18 +5,16 @@
 //
 "use strict";
 
-var thrift = require('thrift');
+var thrift = require("thrift");
 var Thrift = thrift.Thrift;
 var Q = thrift.Q;
 
-
-var ttypes = require('./post_types');
+var ttypes = require("./post_types");
 //HELPER FUNCTIONS AND STRUCTURES
 
-var PostService_ping_args = function(args) {
-};
+var PostService_ping_args = function (args) {};
 PostService_ping_args.prototype = {};
-PostService_ping_args.prototype.read = function(input) {
+PostService_ping_args.prototype.read = function (input) {
   input.readStructBegin();
   while (true) {
     var ret = input.readFieldBegin();
@@ -31,14 +29,14 @@ PostService_ping_args.prototype.read = function(input) {
   return;
 };
 
-PostService_ping_args.prototype.write = function(output) {
-  output.writeStructBegin('PostService_ping_args');
+PostService_ping_args.prototype.write = function (output) {
+  output.writeStructBegin("PostService_ping_args");
   output.writeFieldStop();
   output.writeStructEnd();
   return;
 };
 
-var PostService_ping_result = function(args) {
+var PostService_ping_result = function (args) {
   this.success = null;
   if (args) {
     if (args.success !== undefined && args.success !== null) {
@@ -47,7 +45,7 @@ var PostService_ping_result = function(args) {
   }
 };
 PostService_ping_result.prototype = {};
-PostService_ping_result.prototype.read = function(input) {
+PostService_ping_result.prototype.read = function (input) {
   input.readStructBegin();
   while (true) {
     var ret = input.readFieldBegin();
@@ -58,13 +56,13 @@ PostService_ping_result.prototype.read = function(input) {
     }
     switch (fid) {
       case 0:
-      if (ftype == Thrift.Type.STRUCT) {
-        this.success = new ttypes.PingResponse();
-        this.success.read(input);
-      } else {
-        input.skip(ftype);
-      }
-      break;
+        if (ftype == Thrift.Type.STRUCT) {
+          this.success = new ttypes.PingResponse();
+          this.success.read(input);
+        } else {
+          input.skip(ftype);
+        }
+        break;
       case 0:
         input.skip(ftype);
         break;
@@ -77,10 +75,10 @@ PostService_ping_result.prototype.read = function(input) {
   return;
 };
 
-PostService_ping_result.prototype.write = function(output) {
-  output.writeStructBegin('PostService_ping_result');
+PostService_ping_result.prototype.write = function (output) {
+  output.writeStructBegin("PostService_ping_result");
   if (this.success !== null && this.success !== undefined) {
-    output.writeFieldBegin('success', Thrift.Type.STRUCT, 0);
+    output.writeFieldBegin("success", Thrift.Type.STRUCT, 0);
     this.success.write(output);
     output.writeFieldEnd();
   }
@@ -89,21 +87,25 @@ PostService_ping_result.prototype.write = function(output) {
   return;
 };
 
-var PostServiceClient = exports.Client = function(output, pClass) {
+var PostServiceClient = (exports.Client = function (output, pClass) {
   this.output = output;
   this.pClass = pClass;
   this._seqid = 0;
   this._reqs = {};
-};
+});
 PostServiceClient.prototype = {};
-PostServiceClient.prototype.seqid = function() { return this._seqid; };
-PostServiceClient.prototype.new_seqid = function() { return this._seqid += 1; };
+PostServiceClient.prototype.seqid = function () {
+  return this._seqid;
+};
+PostServiceClient.prototype.new_seqid = function () {
+  return (this._seqid += 1);
+};
 
-PostServiceClient.prototype.ping = function(callback) {
+PostServiceClient.prototype.ping = function (callback) {
   this._seqid = this.new_seqid();
   if (callback === undefined) {
     var _defer = Q.defer();
-    this._reqs[this.seqid()] = function(error, result) {
+    this._reqs[this.seqid()] = function (error, result) {
       if (error) {
         _defer.reject(error);
       } else {
@@ -118,26 +120,25 @@ PostServiceClient.prototype.ping = function(callback) {
   }
 };
 
-PostServiceClient.prototype.send_ping = function() {
+PostServiceClient.prototype.send_ping = function () {
   var output = new this.pClass(this.output);
   var args = new PostService_ping_args();
   try {
-    output.writeMessageBegin('ping', Thrift.MessageType.CALL, this.seqid());
+    output.writeMessageBegin("ping", Thrift.MessageType.CALL, this.seqid());
     args.write(output);
     output.writeMessageEnd();
     return this.output.flush();
-  }
-  catch (e) {
+  } catch (e) {
     delete this._reqs[this.seqid()];
-    if (typeof output.reset === 'function') {
+    if (typeof output.reset === "function") {
       output.reset();
     }
     throw e;
   }
 };
 
-PostServiceClient.prototype.recv_ping = function(input,mtype,rseqid) {
-  var callback = this._reqs[rseqid] || function() {};
+PostServiceClient.prototype.recv_ping = function (input, mtype, rseqid) {
+  var callback = this._reqs[rseqid] || function () {};
   delete this._reqs[rseqid];
   if (mtype == Thrift.MessageType.EXCEPTION) {
     var x = new Thrift.TApplicationException();
@@ -152,53 +153,65 @@ PostServiceClient.prototype.recv_ping = function(input,mtype,rseqid) {
   if (null !== result.success) {
     return callback(null, result.success);
   }
-  return callback('ping failed: unknown result');
+  return callback("ping failed: unknown result");
 };
-var PostServiceProcessor = exports.Processor = function(handler) {
+var PostServiceProcessor = (exports.Processor = function (handler) {
   this._handler = handler;
-};
-PostServiceProcessor.prototype.process = function(input, output) {
+});
+PostServiceProcessor.prototype.process = function (input, output) {
   var r = input.readMessageBegin();
-  if (this['process_' + r.fname]) {
-    return this['process_' + r.fname].call(this, r.rseqid, input, output);
+  if (this["process_" + r.fname]) {
+    return this["process_" + r.fname].call(this, r.rseqid, input, output);
   } else {
     input.skip(Thrift.Type.STRUCT);
     input.readMessageEnd();
-    var x = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN_METHOD, 'Unknown function ' + r.fname);
+    var x = new Thrift.TApplicationException(
+      Thrift.TApplicationExceptionType.UNKNOWN_METHOD,
+      "Unknown function " + r.fname
+    );
     output.writeMessageBegin(r.fname, Thrift.MessageType.EXCEPTION, r.rseqid);
     x.write(output);
     output.writeMessageEnd();
     output.flush();
   }
 };
-PostServiceProcessor.prototype.process_ping = function(seqid, input, output) {
+PostServiceProcessor.prototype.process_ping = function (seqid, input, output) {
   var args = new PostService_ping_args();
   args.read(input);
   input.readMessageEnd();
   if (this._handler.ping.length === 0) {
-    Q.fcall(this._handler.ping.bind(this._handler)
-    ).then(function(result) {
-      var result_obj = new PostService_ping_result({success: result});
-      output.writeMessageBegin("ping", Thrift.MessageType.REPLY, seqid);
-      result_obj.write(output);
-      output.writeMessageEnd();
-      output.flush();
-    }).catch(function (err) {
-      var result;
-      result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
-      output.writeMessageBegin("ping", Thrift.MessageType.EXCEPTION, seqid);
-      result.write(output);
-      output.writeMessageEnd();
-      output.flush();
-    });
+    Q.fcall(this._handler.ping.bind(this._handler))
+      .then(function (result) {
+        var result_obj = new PostService_ping_result({ success: result });
+        output.writeMessageBegin("ping", Thrift.MessageType.REPLY, seqid);
+        result_obj.write(output);
+        output.writeMessageEnd();
+        output.flush();
+      })
+      .catch(function (err) {
+        var result;
+        result = new Thrift.TApplicationException(
+          Thrift.TApplicationExceptionType.UNKNOWN,
+          err.message
+        );
+        output.writeMessageBegin("ping", Thrift.MessageType.EXCEPTION, seqid);
+        result.write(output);
+        output.writeMessageEnd();
+        output.flush();
+      });
   } else {
     this._handler.ping(function (err, result) {
       var result_obj;
-      if ((err === null || typeof err === 'undefined')) {
-        result_obj = new PostService_ping_result((err !== null || typeof err === 'undefined') ? err : {success: result});
+      if (err === null || typeof err === "undefined") {
+        result_obj = new PostService_ping_result(
+          err !== null || typeof err === "undefined" ? err : { success: result }
+        );
         output.writeMessageBegin("ping", Thrift.MessageType.REPLY, seqid);
       } else {
-        result_obj = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
+        result_obj = new Thrift.TApplicationException(
+          Thrift.TApplicationExceptionType.UNKNOWN,
+          err.message
+        );
         output.writeMessageBegin("ping", Thrift.MessageType.EXCEPTION, seqid);
       }
       result_obj.write(output);

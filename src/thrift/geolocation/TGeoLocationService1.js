@@ -16,7 +16,7 @@ if (typeof Int64 === "undefined" && typeof require === "function") {
   var Int64 = require("node-int64");
 }
 
-var TGeoLocationService_getLastGeoLocation_args = function (args) {
+TGeoLocationService_getLastGeoLocation_args = function (args) {
   this.vin = null;
   this.dongleId = null;
   if (args) {
@@ -82,7 +82,7 @@ TGeoLocationService_getLastGeoLocation_args.prototype.write = function (
   return;
 };
 
-var TGeoLocationService_getLastGeoLocation_result = function (args) {
+TGeoLocationService_getLastGeoLocation_result = function (args) {
   this.success = null;
   if (args) {
     if (args.success !== undefined && args.success !== null) {
@@ -137,7 +137,7 @@ TGeoLocationService_getLastGeoLocation_result.prototype.write = function (
   return;
 };
 
-var TGeoLocationServiceClient = function (input, output) {
+TGeoLocationServiceClient = function (input, output) {
   this.input = input;
   this.output = !output ? input : output;
   this.seqid = 0;

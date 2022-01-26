@@ -256,11 +256,11 @@ TGeoLocationService_createGeofence_result.prototype.write = function (output) {
   return;
 };
 
-var TGeoLocationServiceClient = function (input, output) {
+var TGeoLocationServiceClient = (exports.Client = function (input, output) {
   this.input = input;
   this.output = !output ? input : output;
   this.seqid = 0;
-};
+});
 TGeoLocationServiceClient.prototype = {};
 
 TGeoLocationServiceClient.prototype.getLastGeoLocation = function (

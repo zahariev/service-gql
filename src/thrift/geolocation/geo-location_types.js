@@ -11,7 +11,8 @@ if (typeof Int64 === "undefined" && typeof require === "function") {
   var Int64 = require("node-int64");
 }
 
-var TGeoLocationException = function (args) {
+var ttypes = (module.exports = {});
+var TGeoLocationException = (module.exports.PingResponse = function (args) {
   this.id = null;
   this.message = null;
   if (args) {
@@ -22,7 +23,7 @@ var TGeoLocationException = function (args) {
       this.message = args.message;
     }
   }
-};
+});
 Thrift.inherits(TGeoLocationException, Thrift.TException);
 TGeoLocationException.prototype.name = "TGeoLocationException";
 TGeoLocationException.prototype.read = function (input) {
