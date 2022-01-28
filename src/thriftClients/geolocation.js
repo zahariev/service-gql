@@ -11,7 +11,11 @@ logger.info(`geolocationClient: ${SERVER_HOST} ${SERVER_PORT}`);
 
 const thriftOptions = {
   transport: thrift.TBufferedTransport,
-  protocol: thrift.TCompactProtocol,
+  protocol: thrift.TBinaryProtocol,
+  path: "/geo-location/api",
+  //   timeout: 10000,
+  //   connectionTimeout: 10000,
+  //   max_attempts: 5,
 };
 
 const connection = thrift.createConnection(
@@ -26,11 +30,12 @@ connection.on("error", (err) => {
 });
 
 connection.on("connect", () => {
-  console.log("TGService", TGeoLocationService);
-  console.log("============================");
-  console.log("conn", connection);
+  //   console.log("TGService", TGeoLocationService);
+  //   console.log("============================");
+  //   console.log("conn", connection);
   client = thrift.createClient(TGeoLocationService, connection);
   logger.info("geolocationClient: Connected to thrift server!");
+  console.log(client);
 });
 
 connection.on("close", () => {
@@ -45,12 +50,24 @@ process.on("SIGTERM", connection.end);
  * @param {string} func thrift function to call
  * @param {object[]} params params to pass to the thrift function
  */
-const geolocationClient = (func, params) =>
+const geolocationClient = async (func, params) => {
+  console.log("func", func);
+  console.log("client", client);
+  //   client.getGeofence({ id: 1 }).then((response) => {
+  //     console.log("asd", response);
+  //   });
   new Promise((resolve, reject) => {
     client[func](...params)
-      .then(resolve)
-      .fail(reject);
+      .then((res) => {
+        logger.info("res", res);
+        resolve();
+      })
+      .fail((err) => {
+        console.log("err", err);
+        reject();
+      });
   });
+};
 // Apache uses 'Q' promise library
 // See https://issues.apache.org/jira/browse/THRIFT-2376
 

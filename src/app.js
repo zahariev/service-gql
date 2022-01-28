@@ -27,7 +27,7 @@ const apolloServer = new ApolloServer({
   typeDefs,
   resolvers,
   formatResponse: (response) => {
-    logger.info(JSON.stringify(response));
+    // logger.info(JSON.stringify(response));
     return response;
   },
   formatError: (error) => {

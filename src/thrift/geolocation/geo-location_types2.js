@@ -3,19 +3,16 @@
 //
 // DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
 //
-"use strict";
 
 var thrift = require("thrift");
 var Thrift = thrift.Thrift;
-var Q = thrift.Q;
-var Int64 = require("node-int64");
+
+if (typeof Int64 === "undefined" && typeof require === "function") {
+  var Int64 = require("node-int64");
+}
 
 var ttypes = (module.exports = {});
-var TGeoLocationException = (module.exports.TGeoLocationException = function (
-  args
-) {
-  Thrift.TException.call(this, "TGeoLocationException");
-  this.name = "TGeoLocationException";
+var TGeoLocationException = (module.exports.PingResponse = function (args) {
   this.id = null;
   this.message = null;
   if (args) {
@@ -41,14 +38,14 @@ TGeoLocationException.prototype.read = function (input) {
     switch (fid) {
       case 1:
         if (ftype == Thrift.Type.I32) {
-          this.id = input.readI32();
+          this.id = input.readI32().value;
         } else {
           input.skip(ftype);
         }
         break;
       case 2:
         if (ftype == Thrift.Type.STRING) {
-          this.message = input.readString();
+          this.message = input.readString().value;
         } else {
           input.skip(ftype);
         }
@@ -79,7 +76,7 @@ TGeoLocationException.prototype.write = function (output) {
   return;
 };
 
-var TGeoCoordinate = (module.exports.TGeoCoordinate = function (args) {
+var TGeoCoordinate = function (args) {
   this.vin = null;
   this.dongleId = null;
   this.lat = null;
@@ -130,7 +127,7 @@ var TGeoCoordinate = (module.exports.TGeoCoordinate = function (args) {
       this.time = args.time;
     }
   }
-});
+};
 TGeoCoordinate.prototype = {};
 TGeoCoordinate.prototype.read = function (input) {
   input.readStructBegin();
@@ -144,84 +141,84 @@ TGeoCoordinate.prototype.read = function (input) {
     switch (fid) {
       case 1:
         if (ftype == Thrift.Type.STRING) {
-          this.vin = input.readString();
+          this.vin = input.readString().value;
         } else {
           input.skip(ftype);
         }
         break;
       case 2:
         if (ftype == Thrift.Type.STRING) {
-          this.dongleId = input.readString();
+          this.dongleId = input.readString().value;
         } else {
           input.skip(ftype);
         }
         break;
       case 3:
         if (ftype == Thrift.Type.DOUBLE) {
-          this.lat = input.readDouble();
+          this.lat = input.readDouble().value;
         } else {
           input.skip(ftype);
         }
         break;
       case 4:
         if (ftype == Thrift.Type.DOUBLE) {
-          this.lng = input.readDouble();
+          this.lng = input.readDouble().value;
         } else {
           input.skip(ftype);
         }
         break;
       case 5:
         if (ftype == Thrift.Type.DOUBLE) {
-          this.hdop = input.readDouble();
+          this.hdop = input.readDouble().value;
         } else {
           input.skip(ftype);
         }
         break;
       case 6:
         if (ftype == Thrift.Type.DOUBLE) {
-          this.precision = input.readDouble();
+          this.precision = input.readDouble().value;
         } else {
           input.skip(ftype);
         }
         break;
       case 7:
         if (ftype == Thrift.Type.DOUBLE) {
-          this.heading = input.readDouble();
+          this.heading = input.readDouble().value;
         } else {
           input.skip(ftype);
         }
         break;
       case 8:
         if (ftype == Thrift.Type.DOUBLE) {
-          this.altitude = input.readDouble();
+          this.altitude = input.readDouble().value;
         } else {
           input.skip(ftype);
         }
         break;
       case 9:
         if (ftype == Thrift.Type.DOUBLE) {
-          this.speed = input.readDouble();
+          this.speed = input.readDouble().value;
         } else {
           input.skip(ftype);
         }
         break;
       case 10:
         if (ftype == Thrift.Type.DOUBLE) {
-          this.source = input.readDouble();
+          this.source = input.readDouble().value;
         } else {
           input.skip(ftype);
         }
         break;
       case 11:
         if (ftype == Thrift.Type.DOUBLE) {
-          this.info = input.readDouble();
+          this.info = input.readDouble().value;
         } else {
           input.skip(ftype);
         }
         break;
       case 12:
         if (ftype == Thrift.Type.I64) {
-          this.time = input.readI64();
+          this.time = input.readI64().value;
         } else {
           input.skip(ftype);
         }
@@ -302,7 +299,7 @@ TGeoCoordinate.prototype.write = function (output) {
   return;
 };
 
-var TGeofenceRq = (module.exports.TGeofenceRq = function (args) {
+TGeofenceRq = function (args) {
   this.label = null;
   this.description = null;
   this.circle = null;
@@ -315,13 +312,13 @@ var TGeofenceRq = (module.exports.TGeofenceRq = function (args) {
       this.description = args.description;
     }
     if (args.circle !== undefined && args.circle !== null) {
-      this.circle = new ttypes.TCircleRq(args.circle);
+      this.circle = new TCircleRq(args.circle);
     }
     if (args.polygon !== undefined && args.polygon !== null) {
-      this.polygon = new ttypes.TPolygonRq(args.polygon);
+      this.polygon = new TPolygonRq(args.polygon);
     }
   }
-});
+};
 TGeofenceRq.prototype = {};
 TGeofenceRq.prototype.read = function (input) {
   input.readStructBegin();
@@ -335,21 +332,21 @@ TGeofenceRq.prototype.read = function (input) {
     switch (fid) {
       case 1:
         if (ftype == Thrift.Type.STRING) {
-          this.label = input.readString();
+          this.label = input.readString().value;
         } else {
           input.skip(ftype);
         }
         break;
       case 2:
         if (ftype == Thrift.Type.STRING) {
-          this.description = input.readString();
+          this.description = input.readString().value;
         } else {
           input.skip(ftype);
         }
         break;
       case 3:
         if (ftype == Thrift.Type.STRUCT) {
-          this.circle = new ttypes.TCircleRq();
+          this.circle = new TCircleRq();
           this.circle.read(input);
         } else {
           input.skip(ftype);
@@ -357,7 +354,7 @@ TGeofenceRq.prototype.read = function (input) {
         break;
       case 4:
         if (ftype == Thrift.Type.STRUCT) {
-          this.polygon = new ttypes.TPolygonRq();
+          this.polygon = new TPolygonRq();
           this.polygon.read(input);
         } else {
           input.skip(ftype);
@@ -399,88 +396,7 @@ TGeofenceRq.prototype.write = function (output) {
   return;
 };
 
-var TGeofenceUpdRq = (module.exports.TGeofenceUpdRq = function (args) {
-  this.description = null;
-  this.circle = null;
-  this.polygon = null;
-  if (args) {
-    if (args.description !== undefined && args.description !== null) {
-      this.description = args.description;
-    }
-    if (args.circle !== undefined && args.circle !== null) {
-      this.circle = new ttypes.TCircleRq(args.circle);
-    }
-    if (args.polygon !== undefined && args.polygon !== null) {
-      this.polygon = new ttypes.TPolygonRq(args.polygon);
-    }
-  }
-});
-TGeofenceUpdRq.prototype = {};
-TGeofenceUpdRq.prototype.read = function (input) {
-  input.readStructBegin();
-  while (true) {
-    var ret = input.readFieldBegin();
-    var ftype = ret.ftype;
-    var fid = ret.fid;
-    if (ftype == Thrift.Type.STOP) {
-      break;
-    }
-    switch (fid) {
-      case 1:
-        if (ftype == Thrift.Type.STRING) {
-          this.description = input.readString();
-        } else {
-          input.skip(ftype);
-        }
-        break;
-      case 2:
-        if (ftype == Thrift.Type.STRUCT) {
-          this.circle = new ttypes.TCircleRq();
-          this.circle.read(input);
-        } else {
-          input.skip(ftype);
-        }
-        break;
-      case 3:
-        if (ftype == Thrift.Type.STRUCT) {
-          this.polygon = new ttypes.TPolygonRq();
-          this.polygon.read(input);
-        } else {
-          input.skip(ftype);
-        }
-        break;
-      default:
-        input.skip(ftype);
-    }
-    input.readFieldEnd();
-  }
-  input.readStructEnd();
-  return;
-};
-
-TGeofenceUpdRq.prototype.write = function (output) {
-  output.writeStructBegin("TGeofenceUpdRq");
-  if (this.description !== null && this.description !== undefined) {
-    output.writeFieldBegin("description", Thrift.Type.STRING, 1);
-    output.writeString(this.description);
-    output.writeFieldEnd();
-  }
-  if (this.circle !== null && this.circle !== undefined) {
-    output.writeFieldBegin("circle", Thrift.Type.STRUCT, 2);
-    this.circle.write(output);
-    output.writeFieldEnd();
-  }
-  if (this.polygon !== null && this.polygon !== undefined) {
-    output.writeFieldBegin("polygon", Thrift.Type.STRUCT, 3);
-    this.polygon.write(output);
-    output.writeFieldEnd();
-  }
-  output.writeFieldStop();
-  output.writeStructEnd();
-  return;
-};
-
-var TCircleRq = (module.exports.TCircleRq = function (args) {
+var TCircleRq = function (args) {
   this.radius = null;
   this.lat = null;
   this.lng = null;
@@ -503,7 +419,7 @@ var TCircleRq = (module.exports.TCircleRq = function (args) {
       this.color = args.color;
     }
   }
-});
+};
 TCircleRq.prototype = {};
 TCircleRq.prototype.read = function (input) {
   input.readStructBegin();
@@ -517,35 +433,35 @@ TCircleRq.prototype.read = function (input) {
     switch (fid) {
       case 1:
         if (ftype == Thrift.Type.DOUBLE) {
-          this.radius = input.readDouble();
+          this.radius = input.readDouble().value;
         } else {
           input.skip(ftype);
         }
         break;
       case 2:
         if (ftype == Thrift.Type.DOUBLE) {
-          this.lat = input.readDouble();
+          this.lat = input.readDouble().value;
         } else {
           input.skip(ftype);
         }
         break;
       case 3:
         if (ftype == Thrift.Type.DOUBLE) {
-          this.lng = input.readDouble();
+          this.lng = input.readDouble().value;
         } else {
           input.skip(ftype);
         }
         break;
       case 4:
         if (ftype == Thrift.Type.STRING) {
-          this.address = input.readString();
+          this.address = input.readString().value;
         } else {
           input.skip(ftype);
         }
         break;
       case 5:
         if (ftype == Thrift.Type.STRING) {
-          this.color = input.readString();
+          this.color = input.readString().value;
         } else {
           input.skip(ftype);
         }
@@ -591,7 +507,7 @@ TCircleRq.prototype.write = function (output) {
   return;
 };
 
-var TPolygonRq = (module.exports.TPolygonRq = function (args) {
+var TPolygonRq = function (args) {
   this.color = null;
   this.point = null;
   if (args) {
@@ -602,7 +518,7 @@ var TPolygonRq = (module.exports.TPolygonRq = function (args) {
       this.point = Thrift.copyList(args.point, [null]);
     }
   }
-});
+};
 TPolygonRq.prototype = {};
 TPolygonRq.prototype.read = function (input) {
   input.readStructBegin();
@@ -616,7 +532,7 @@ TPolygonRq.prototype.read = function (input) {
     switch (fid) {
       case 1:
         if (ftype == Thrift.Type.STRING) {
-          this.color = input.readString();
+          this.color = input.readString().value;
         } else {
           input.skip(ftype);
         }
@@ -628,7 +544,7 @@ TPolygonRq.prototype.read = function (input) {
           var _size0 = _rtmp31.size || 0;
           for (var _i2 = 0; _i2 < _size0; ++_i2) {
             var elem3 = null;
-            elem3 = new ttypes.TPointRq();
+            elem3 = new TPointRq();
             elem3.read(input);
             this.point.push(elem3);
           }
@@ -670,7 +586,7 @@ TPolygonRq.prototype.write = function (output) {
   return;
 };
 
-var TPointRq = (module.exports.TPointRq = function (args) {
+var TPointRq = function (args) {
   this.lat = null;
   this.lng = null;
   if (args) {
@@ -681,7 +597,7 @@ var TPointRq = (module.exports.TPointRq = function (args) {
       this.lng = args.lng;
     }
   }
-});
+};
 TPointRq.prototype = {};
 TPointRq.prototype.read = function (input) {
   input.readStructBegin();
@@ -695,14 +611,14 @@ TPointRq.prototype.read = function (input) {
     switch (fid) {
       case 1:
         if (ftype == Thrift.Type.DOUBLE) {
-          this.lat = input.readDouble();
+          this.lat = input.readDouble().value;
         } else {
           input.skip(ftype);
         }
         break;
       case 2:
         if (ftype == Thrift.Type.DOUBLE) {
-          this.lng = input.readDouble();
+          this.lng = input.readDouble().value;
         } else {
           input.skip(ftype);
         }
@@ -733,7 +649,7 @@ TPointRq.prototype.write = function (output) {
   return;
 };
 
-var TGeofence = (module.exports.TGeofence = function (args) {
+var TGeofence = function (args) {
   this.id = null;
   this.label = null;
   this.description = null;
@@ -750,13 +666,13 @@ var TGeofence = (module.exports.TGeofence = function (args) {
       this.description = args.description;
     }
     if (args.circle !== undefined && args.circle !== null) {
-      this.circle = new ttypes.TCircle(args.circle);
+      this.circle = new TCircle(args.circle);
     }
     if (args.polygon !== undefined && args.polygon !== null) {
-      this.polygon = new ttypes.TPolygon(args.polygon);
+      this.polygon = new TPolygon(args.polygon);
     }
   }
-});
+};
 TGeofence.prototype = {};
 TGeofence.prototype.read = function (input) {
   input.readStructBegin();
@@ -770,28 +686,28 @@ TGeofence.prototype.read = function (input) {
     switch (fid) {
       case 1:
         if (ftype == Thrift.Type.I64) {
-          this.id = input.readI64();
+          this.id = input.readI64().value;
         } else {
           input.skip(ftype);
         }
         break;
       case 2:
         if (ftype == Thrift.Type.STRING) {
-          this.label = input.readString();
+          this.label = input.readString().value;
         } else {
           input.skip(ftype);
         }
         break;
       case 3:
         if (ftype == Thrift.Type.STRING) {
-          this.description = input.readString();
+          this.description = input.readString().value;
         } else {
           input.skip(ftype);
         }
         break;
       case 4:
         if (ftype == Thrift.Type.STRUCT) {
-          this.circle = new ttypes.TCircle();
+          this.circle = new TCircle();
           this.circle.read(input);
         } else {
           input.skip(ftype);
@@ -799,7 +715,7 @@ TGeofence.prototype.read = function (input) {
         break;
       case 5:
         if (ftype == Thrift.Type.STRUCT) {
-          this.polygon = new ttypes.TPolygon();
+          this.polygon = new TPolygon();
           this.polygon.read(input);
         } else {
           input.skip(ftype);
@@ -846,7 +762,7 @@ TGeofence.prototype.write = function (output) {
   return;
 };
 
-var TCircle = (module.exports.TCircle = function (args) {
+var TCircle = function (args) {
   this.id = null;
   this.radius = null;
   this.lat = null;
@@ -873,7 +789,7 @@ var TCircle = (module.exports.TCircle = function (args) {
       this.color = args.color;
     }
   }
-});
+};
 TCircle.prototype = {};
 TCircle.prototype.read = function (input) {
   input.readStructBegin();
@@ -887,42 +803,42 @@ TCircle.prototype.read = function (input) {
     switch (fid) {
       case 1:
         if (ftype == Thrift.Type.I64) {
-          this.id = input.readI64();
+          this.id = input.readI64().value;
         } else {
           input.skip(ftype);
         }
         break;
       case 2:
         if (ftype == Thrift.Type.DOUBLE) {
-          this.radius = input.readDouble();
+          this.radius = input.readDouble().value;
         } else {
           input.skip(ftype);
         }
         break;
       case 3:
         if (ftype == Thrift.Type.DOUBLE) {
-          this.lat = input.readDouble();
+          this.lat = input.readDouble().value;
         } else {
           input.skip(ftype);
         }
         break;
       case 4:
         if (ftype == Thrift.Type.DOUBLE) {
-          this.lng = input.readDouble();
+          this.lng = input.readDouble().value;
         } else {
           input.skip(ftype);
         }
         break;
       case 5:
         if (ftype == Thrift.Type.STRING) {
-          this.address = input.readString();
+          this.address = input.readString().value;
         } else {
           input.skip(ftype);
         }
         break;
       case 6:
         if (ftype == Thrift.Type.STRING) {
-          this.color = input.readString();
+          this.color = input.readString().value;
         } else {
           input.skip(ftype);
         }
@@ -973,7 +889,7 @@ TCircle.prototype.write = function (output) {
   return;
 };
 
-var TPolygon = (module.exports.TPolygon = function (args) {
+var TPolygon = function (args) {
   this.id = null;
   this.color = null;
   this.point = null;
@@ -988,7 +904,7 @@ var TPolygon = (module.exports.TPolygon = function (args) {
       this.point = Thrift.copyList(args.point, [null]);
     }
   }
-});
+};
 TPolygon.prototype = {};
 TPolygon.prototype.read = function (input) {
   input.readStructBegin();
@@ -1002,14 +918,14 @@ TPolygon.prototype.read = function (input) {
     switch (fid) {
       case 1:
         if (ftype == Thrift.Type.I64) {
-          this.id = input.readI64();
+          this.id = input.readI64().value;
         } else {
           input.skip(ftype);
         }
         break;
       case 2:
         if (ftype == Thrift.Type.STRING) {
-          this.color = input.readString();
+          this.color = input.readString().value;
         } else {
           input.skip(ftype);
         }
@@ -1021,7 +937,7 @@ TPolygon.prototype.read = function (input) {
           var _size5 = _rtmp36.size || 0;
           for (var _i7 = 0; _i7 < _size5; ++_i7) {
             var elem8 = null;
-            elem8 = new ttypes.TPoint();
+            elem8 = new TPoint();
             elem8.read(input);
             this.point.push(elem8);
           }
@@ -1068,7 +984,7 @@ TPolygon.prototype.write = function (output) {
   return;
 };
 
-var TPoint = (module.exports.TPoint = function (args) {
+var TPoint = function (args) {
   this.id = null;
   this.lat = null;
   this.lng = null;
@@ -1083,7 +999,7 @@ var TPoint = (module.exports.TPoint = function (args) {
       this.lng = args.lng;
     }
   }
-});
+};
 TPoint.prototype = {};
 TPoint.prototype.read = function (input) {
   input.readStructBegin();
@@ -1097,21 +1013,21 @@ TPoint.prototype.read = function (input) {
     switch (fid) {
       case 1:
         if (ftype == Thrift.Type.I64) {
-          this.id = input.readI64();
+          this.id = input.readI64().value;
         } else {
           input.skip(ftype);
         }
         break;
       case 2:
         if (ftype == Thrift.Type.DOUBLE) {
-          this.lat = input.readDouble();
+          this.lat = input.readDouble().value;
         } else {
           input.skip(ftype);
         }
         break;
       case 3:
         if (ftype == Thrift.Type.DOUBLE) {
-          this.lng = input.readDouble();
+          this.lng = input.readDouble().value;
         } else {
           input.skip(ftype);
         }
@@ -1140,69 +1056,6 @@ TPoint.prototype.write = function (output) {
   if (this.lng !== null && this.lng !== undefined) {
     output.writeFieldBegin("lng", Thrift.Type.DOUBLE, 3);
     output.writeDouble(this.lng);
-    output.writeFieldEnd();
-  }
-  output.writeFieldStop();
-  output.writeStructEnd();
-  return;
-};
-
-var TGeofenceSearch = (module.exports.TGeofenceSearch = function (args) {
-  this.id = null;
-  this.label = null;
-  if (args) {
-    if (args.id !== undefined && args.id !== null) {
-      this.id = args.id;
-    }
-    if (args.label !== undefined && args.label !== null) {
-      this.label = args.label;
-    }
-  }
-});
-TGeofenceSearch.prototype = {};
-TGeofenceSearch.prototype.read = function (input) {
-  input.readStructBegin();
-  while (true) {
-    var ret = input.readFieldBegin();
-    var ftype = ret.ftype;
-    var fid = ret.fid;
-    if (ftype == Thrift.Type.STOP) {
-      break;
-    }
-    switch (fid) {
-      case 1:
-        if (ftype == Thrift.Type.I64) {
-          this.id = input.readI64();
-        } else {
-          input.skip(ftype);
-        }
-        break;
-      case 2:
-        if (ftype == Thrift.Type.STRING) {
-          this.label = input.readString();
-        } else {
-          input.skip(ftype);
-        }
-        break;
-      default:
-        input.skip(ftype);
-    }
-    input.readFieldEnd();
-  }
-  input.readStructEnd();
-  return;
-};
-
-TGeofenceSearch.prototype.write = function (output) {
-  output.writeStructBegin("TGeofenceSearch");
-  if (this.id !== null && this.id !== undefined) {
-    output.writeFieldBegin("id", Thrift.Type.I64, 1);
-    output.writeI64(this.id);
-    output.writeFieldEnd();
-  }
-  if (this.label !== null && this.label !== undefined) {
-    output.writeFieldBegin("label", Thrift.Type.STRING, 2);
-    output.writeString(this.label);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
