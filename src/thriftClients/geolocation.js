@@ -62,7 +62,7 @@ const geolocationClient = async (func, params) => {
         logger.info("res", res);
         resolve();
       })
-      .fail((err) => {
+      .catch((err) => {
         console.log("err", err);
         reject();
       });
